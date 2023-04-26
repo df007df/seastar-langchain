@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <packaging>pom</packaging>
+
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>2.7.0</version>
+    </parent>
+
+    <groupId>com.seastar.aigc</groupId>
+    <artifactId>seastar-aigc</artifactId>
+    <version>${revision}</version>
+    <name>seastar-aigc</name>
+
+    <properties>
+        <revision>1.0.1-SNAPSHOT</revision>
+        <java.version>1.8</java.version>
+        <java.encoding>UTF-8</java.encoding>
+        <commons-collections.version>3.2.2</commons-collections.version>
+        <maven.test.skip>true</maven.test.skip>
+        <swagger.version>3.0.0</swagger.version>
+        <hutool.version>5.6.5</hutool.version>
+        <aliyun.cms>0.2.4</aliyun.cms>
+        <openai.gpt3.sevice>0.11.0</openai.gpt3.sevice>
+        <fastjson.version>1.2.75</fastjson.version>
+        <aliyun.sdk.oss.version>3.16.0</aliyun.sdk.oss.version>
+        <mybatis.version>3.4.2</mybatis.version>
+        <druid.version>1.2.8</druid.version>
+        <feign.version>4.0.0</feign.version>
+        <redis.version>2.5.14</redis.version>
+    </properties>
+
+    <modules>
+        <module>seastar-langchain</module>
+        <module>seastar-langchain-workflow</module>
+        <module>seastar-aigc-start</module>
+    </modules>
+
+
+    <dependencyManagement>
+
+        <dependencies>
+
+            <dependency>
+                <groupId>com.seastar.aigc</groupId>
+                <artifactId>seastar-langchain</artifactId>
+                <version>${revision}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.seastar.aigc</groupId>
+                <artifactId>seastar-langchain-workflow</artifactId>
+                <version>${revision}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>cn.hutool</groupId>
+                <artifactId>hutool-all</artifactId>
+                <version>${hutool.version}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.theokanning.openai-gpt3-java</groupId>
+                <artifactId>service</artifactId>
+                <version>${openai.gpt3.sevice}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.alibaba</groupId>
+                <artifactId>fastjson</artifactId>
+                <version>${fastjson.version}</version>
+            </dependency>
+
+        </dependencies>
+    </dependencyManagement>
+
+
+    <dependencies>
+
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <optional>true</optional>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.12</version>
+            <scope>test</scope>
+        </dependency>
+
+    </dependencies>
+
+
+    <distributionManagement>
+        <repository>
+            <id>seastar</id>
+            <url>https://pkgs.dev.azure.com/duanfeisj/seastar/_packaging/seastar/maven/v1</url>
+        </repository>
+    </distributionManagement>
+
+    <repositories>
+        <repository>
+            <id>seastar</id>
+            <url>https://pkgs.dev.azure.com/duanfeisj/seastar/_packaging/seastar/maven/v1</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>true</enabled>
+                <updatePolicy>always</updatePolicy>
+            </snapshots>
+        </repository>
+    </repositories>
+
+    <build>
+        <plugins>
+
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
+                    <mainClass>com.seastar.aigc.SeastarAigcApplication</mainClass>
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>repackage</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.3</version>
+                <configuration>
+                    <encoding>${java.encoding}</encoding>
+                    <source>${java.version}</source>
+                    <target>${java.version}</target>
+                </configuration>
+                <executions>
+                    <execution>
+                        <phase>compile</phase>
+                        <goals>
+                            <goal>compile</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>flatten-maven-plugin</artifactId>
+                <version>1.2.7</version>
+                <configuration>
+                    <outputDirectory>${project.build.directory}</outputDirectory>
+                    <updatePomFile>true</updatePomFile>
+                    <flattenMode>resolveCiFriendliesOnly</flattenMode>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>flatten</id>
+                        <phase>process-resources</phase>
+                        <goals>
+                            <goal>flatten</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>flatten.clean</id>
+                        <phase>clean</phase>
+                        <goals>
+                            <goal>clean</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+</project>
